@@ -3,7 +3,6 @@ module FotoVerite
     module AddressVerification
       
       class Error < FotoVerite::USPS::Error; end
-      class GeneralAddressFoundError < Error; end
       class AddressNotFoundError < Error; end
       
       API_CODES ={
@@ -97,8 +96,8 @@ module FotoVerite
         if error = doc.at("error")
           msg = error.at("description").inner_text
           if msg =~ /address not found|invalid/i
-          #if msg =~ /address not found/
-            raise AddressNotFoundError
+            #if msg =~ /address not found/
+            raise AddressNotFoundError, msg
           else
             raise Error, "Error during address verification: '#{msg}'"
           end
